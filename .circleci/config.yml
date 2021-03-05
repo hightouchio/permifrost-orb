@@ -25,8 +25,7 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
-      - permifrost-orb/apply:
-          spec-path: src/tests/test_spec.yml
+      - permifrost-orb/greet
 
 workflows:
   test-pack:
