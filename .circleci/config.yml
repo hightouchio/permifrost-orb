@@ -1,14 +1,11 @@
 version: 2.1
 
 orbs:
-  # Replace this with your own!
   permifrost-orb: hightouchio/permifrost-orb@<<pipeline.parameters.dev-orb-version>>
   orb-tools: circleci/orb-tools@10.0
   bats: circleci/bats@1.0
   shellcheck: circleci/shellcheck@2.0
 
-# Pipeline Parameters
-## These parameters are used internally by orb-tools. Skip to the Jobs section.
 parameters:
   run-integration-tests:
     description: An internal flag to prevent integration test from running before a development version has been created.
@@ -23,20 +20,15 @@ parameters:
     default: "dev:alpha"
 
 jobs:
-  # Define one or more jobs which will utilize your orb's commands and parameters to validate your changes.
   integration-test-1:
     docker:
       - image: cimg/base:stable
     steps:
       - checkout
-      # "greet" is a sample command packaged with this orb config.
-      # This sample integration test will run as long as the greet command exists. Once you remove the greet command you should remove this line.
-      # Push new changes first, before adding new tests to your config.
-      - permifrost-orb/greet
+      - permifrost-orb/apply:
+          spec-path: src/tests/test_spec.yml
 
 workflows:
-  # Prior to producing a development orb (which requires credentials) basic validation, linting, and even unit testing can be performed.
-  # This workflow will run on every commit
   test-pack:
     unless: << pipeline.parameters.run-integration-tests >>
     jobs:
@@ -58,34 +50,22 @@ workflows:
             - orb-tools/pack
             - bats/run
             - shellcheck/check
-      # Publish development version(s) of the orb.
       - orb-tools/publish-dev:
           orb-name: hightouchio/permifrost-orb
-          context: orb-publishing # A restricted context containing your private publishing credentials. Will only execute if approved by an authorized user.
+          context: orb-publishing
           requires: [hold-for-dev-publish]
-      # Trigger an integration workflow to test the
-      # dev:${CIRCLE_SHA1:0:7} version of your orb
       - orb-tools/trigger-integration-tests-workflow:
           name: trigger-integration-dev
-          context: orb-publishing
+          context:
+            - orb-publishing
+            - snowflake_creds
           requires:
             - orb-tools/publish-dev
 
-  # This `integration-test_deploy` workflow will only run
-  # when the run-integration-tests pipeline parameter is set to true.
-  # It is meant to be triggered by the "trigger-integration-tests-workflow"
-  # job, and run tests on <your orb>@dev:${CIRCLE_SHA1:0:7}.
   integration-test_deploy:
     when: << pipeline.parameters.run-integration-tests >>
     jobs:
-      # Run any integration tests defined within the `jobs` key.
       - integration-test-1
-      # Publish a semver version of the orb. relies on
-      # the commit subject containing the text "[semver:patch|minor|major|skip]"
-      # as that will determine whether a patch, minor or major
-      # version will be published or if publishing should
-      # be skipped.
-      # e.g. [semver:patch] will cause a patch version to be published.
       - orb-tools/dev-promote-prod-from-commit-subject:
           orb-name: hightouchio/permifrost-orb
           context: orb-publishing
