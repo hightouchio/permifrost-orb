@@ -1,0 +1,50 @@
+version: "1.0"
+databases:
+    - analytics:
+        shared: no
+roles:
+    - accountadmin:
+        warehouses:
+            - loading
+        member_of:
+            - sysadmin
+    - loader:
+        warehouses:
+            - loading
+        owns:
+            schemas:
+                - raw.*
+                - testing_db.*
+            tables:
+                - raw.*.*
+                - testing_db.*.*
+        privileges:
+            databases:
+                read:
+                    - raw
+                    - testing_db
+                write:
+                    - raw
+                    - testing_db
+            schemas:
+                read:
+                    - raw.*
+                    - testing_db.*
+                write:
+                    - raw.*
+                    - testing_db.*
+            tables:
+                read:
+                    - raw.*.*
+                    - testing_db.*.*
+                write:
+                    - raw.*.*
+                    - testing_db.*.*
+
+warehouses:
+    - loading:
+        size: x-small
+    - reporting:
+        size: x-small
+    - transforming:
+        size: x-small

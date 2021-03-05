@@ -1,0 +1,14 @@
+description: >
+  Run Permifrost to apply Snowflake roles.
+parameters:
+  dry-run:
+    default: false
+    description: If true, do not actually run, just validate the config.
+    type: boolean
+  spec-path:
+    default: "roles.yml"
+    description: Path to the spec-file
+    type: string
+steps:
+  - run: permifrost --dry << parameters.spec-path >>
+
