@@ -63,12 +63,11 @@ workflows:
   integration-test_deploy:
     when: << pipeline.parameters.run-integration-tests >>
     jobs:
-      - integration-test-1
+      - integration-test-1:
+          context: snowflake_creds
       - orb-tools/dev-promote-prod-from-commit-subject:
           orb-name: hightouchio/permifrost-orb
-          context:
-            - orb-publishing
-            - snowflake_creds
+          context: orb-publishing
           add-pr-comment: false
           fail-if-semver-not-indicated: true
           publish-version-tag: false
