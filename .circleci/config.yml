@@ -21,12 +21,11 @@ parameters:
 
 jobs:
   integration-test-1:
-    docker:
-      - image: cimg/base:stable
+    executor: permifrost-orb/default
     steps:
       - checkout
       - permifrost-orb/apply:
-        spec-path: src/tests/test_spec.yml
+          spec-path: src/tests/test_spec.yml
 
 workflows:
   test-pack:
