@@ -25,6 +25,7 @@ jobs:
     steps:
       - checkout
       - permifrost-orb/apply:
+          dry-run: true
           spec-path: src/tests/test_spec.yml
 
 workflows:

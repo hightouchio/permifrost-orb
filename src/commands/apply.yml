@@ -10,5 +10,5 @@ parameters:
     description: Path to the spec-file
     type: string
 steps:
-  - run: permifrost --dry << parameters.spec-path >>
+  - run: permifrost run <<# parameters.dry-run>> --dry <</ parameters.dry-run >> << parameters.spec-path >>
 
