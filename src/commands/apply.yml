@@ -61,5 +61,5 @@ steps:
           set -- "$@" ${SPEC_PATH}
         fi
 
-    permifrost run "$@"
+        permifrost run "$@"
 
