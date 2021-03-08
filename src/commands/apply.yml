@@ -9,6 +9,57 @@ parameters:
     default: "roles.yml"
     description: Path to the spec-file
     type: string
+  diff:
+    default: false
+    description: Show full diff, both new and existing permissions
+    type: boolean
+  role:
+    default: ""
+    description: Run grants for specific role
+    type: string
+  user:
+    default: ""
+    description: Run grants for specific users
+    type: string
+  ignore-memberships:
+    default: false
+    description: Do not handle role membership grants/revokes
+    type: boolean
+
 steps:
-  - run: permifrost run <<# parameters.dry-run>> --dry <</ parameters.dry-run >> << parameters.spec-path >>
+  - run:
+      name: Run permifrost
+      command: |
+        DRY_RUN="<< parameters.dry-run >>"
+        DIFF="<< parameters.diff >>"
+        ROLE="<< parameters.role >>"
+        USER="<< parameters.user>>"
+        IGNORE_MEMBERSHIPS="<< parameters.ignore-memberships>>"
+        SPEC_PATH="<< parameters.spec-path >>"
+
+        if [ "${DRY_RUN}" == "true" ]; then
+          set -- "$@" --dry
+        fi
+
+        if [ "${DIFF}" == "true" ]; then
+          set -- "$@" --diff
+        fi
+
+        if [ -n "${ROLE}" ]; then
+          set -- "$@" --role "${ROLE}"
+        fi
+
+        if [ -n "${USER}" ]; then
+          set -- "$@" --user "${USER}"
+        fi
+
+        if [ "${IGNORE_MEMBERSHIPS}" == "true" ]; then
+          set -- "$@" --ignore-memberships
+        fi
+
+        if [ -n "${SPEC_PATH}" ]; then
+          set -- "$@" ${SPEC_PATH}
+        fi
+
+    permifrost run "$@"
 
