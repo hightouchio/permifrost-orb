@@ -1,0 +1,8 @@
+version: 2.1
+
+description: >
+  Update Snowflake permissions with Permifrost
+
+display:
+  home_url: "https://www.hightouch.io"
+  source_url: "https://github.com/hightouchio/permifrost-orb"

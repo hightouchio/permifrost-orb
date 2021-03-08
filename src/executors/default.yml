@@ -1,0 +1,11 @@
+description: >
+  The default executor is the CircleCI Python Image
+docker:
+  - image: 'registry.gitlab.com/gitlab-data/permifrost:<<parameters.tag>>'
+parameters:
+  tag:
+    default: "latest"
+    description: >
+      Container tag to use for permifrost. See:
+      https://gitlab.com/gitlab-data/permifrost/container_registry/954896
+    type: string

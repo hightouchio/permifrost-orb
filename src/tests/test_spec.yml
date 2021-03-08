@@ -1,0 +1,11 @@
+version: "1.0"
+databases:
+    - analytics:
+        shared: no
+roles:
+    - accountadmin:
+        warehouses:
+            - loading
+warehouses:
+    - loading:
+        size: x-small

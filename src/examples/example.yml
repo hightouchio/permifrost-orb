@@ -1,0 +1,18 @@
+description: >
+  apply-permissions-example
+usage:
+  version: 2.1
+  orbs:
+    permifrost-orb: hightouchio/permifrost-orb@0.1.0
+  jobs:
+    apply-permissions:
+      executor: permifrost-orb/default
+      steps:
+        - checkout
+        - permifrost-orb/apply:
+            spec-path: snowflake/permissions/roles.yml
+  workflows:
+    apply-permissions-workflow:
+      jobs:
+        - apply-permissions:
+            context: snowflake_creds
