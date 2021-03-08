@@ -29,9 +29,9 @@ jobs:
           spec-path: src/tests/test_spec.yml
       - permifrost-orb/apply:
           dry-run: true
-          diff: true
-          role: accountadmin
-          ignore-memberships: true
+          # diff: true
+          # role: accountadmin
+          # ignore-memberships: true
           spec-path: src/tests/test_spec.yml
 
 workflows:
