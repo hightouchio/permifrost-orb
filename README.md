@@ -3,9 +3,66 @@
 [![CircleCI Build Status](https://circleci.com/gh/hightouchio/permifrost-orb.svg?style=shield "CircleCI Build Status")](https://circleci.com/gh/hightouchio/permifrost-orb) [![CircleCI Orb Version](https://img.shields.io/badge/endpoint.svg?url=https://badges.circleci.io/orb/hightouchio/permifrost-orb)](https://circleci.com/orbs/registry/orb/hightouchio/permifrost-orb) [![GitHub License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/hightouchio/permifrost-orb/master/LICENSE) [![CircleCI Community](https://img.shields.io/badge/community-CircleCI%20Discuss-343434.svg)](https://discuss.circleci.com/c/ecosystem/orbs)
 
 This orb provides helper functionality for managing Snowflake roles and
-permissions via CircleCI.
+permissions via CircleCI and [Permifrost](https://gitlab.com/gitlab-data/permifrost).
 
-There is currently only one command defined called apply
+There is currently only one command defined called apply, which accepts the
+same parameters as Permifrost, the most important being `dry-run` and `spec-path`.
+
+An executor is also provided which uses the latest permifrost container from
+Gitlab.
+
+See the [CircleCI Orb Registry Page](https://circleci.com/orbs/registry/orb/hightouchio/permifrost-orb)
+for detailed documentation on the commands.
+
+## TLDR
+
+Here's two simple steps to getting this working with your data warehouse.
+This sets up a dry-run for all commits to non-master/main branches. Once
+merged into master/main, Permifrost will run against your Snowflake instance.
+
+Assuming you already have the `roles.yaml` spec created using Permifrost:
+
+- Create a context in CircleCI with your Snowflake Credentials. It must use
+  the same environment variables that [Permifrost expects](https://gitlab.com/gitlab-data/permifrost/#connection-parameters). In this example it's called `snowflake_creds`
+
+- Add this to your CircleCI Workflow:
+
+```
+version: 2.1
+orbs:
+  permifrost-orb: hightouchio/permifrost-orb@0.1.0
+jobs:
+  test-permissions:
+    executor: permifrost-orb/default
+    steps:
+      - checkout
+      - permifrost-orb/apply:
+          dry-run: true
+          spec-path: snowflake/permissions/roles.yaml
+  apply-permissions:
+    executor: permifrost-orb/default
+    steps:
+      - checkout
+      - permifrost-orb/apply:
+          spec-path: snowflake/permissions/roles.yaml
+workflows:
+  apply-permissions-workflow:
+    jobs:
+      - test-permissions:
+          context: snowflake_creds
+          filters:
+            branches:
+              ignore:
+                - master
+                - main
+      - apply-permissions:
+          context: snowflake_creds
+          filters:
+            branches:
+              only:
+                - master
+                - main
+```
 
 ## Resources
 
