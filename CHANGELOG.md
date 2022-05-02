@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Current development changes [ to be moved to release ]
 
-## [0.1.1] - 2022-05-02
+## [0.2.0] - 2022-05-02
 
 - Add verbose flag
 
