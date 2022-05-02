@@ -25,6 +25,10 @@ parameters:
     default: false
     description: Do not handle role membership grants/revokes
     type: boolean
+  verbose:
+    default: true
+    description: Whether to use verbose output
+    type: boolean
 
 steps:
   - run:
@@ -36,6 +40,7 @@ steps:
         USER="<< parameters.user>>"
         IGNORE_MEMBERSHIPS="<< parameters.ignore-memberships>>"
         SPEC_PATH="<< parameters.spec-path >>"
+        VERBOSE="<< parameters.verbose >>"
 
         if [ "${DRY_RUN}" == "true" ]; then
           set -- "$@" --dry
@@ -61,5 +66,9 @@ steps:
           set -- "$@" ${SPEC_PATH}
         fi
 
-        permifrost run "$@"
+        if [ -n "${VERBOSE}" ]; then
+            permifrost -vv run "$@"
+        else
+            permifrost run "$@"
+        fi
 

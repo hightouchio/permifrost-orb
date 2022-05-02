@@ -30,7 +30,7 @@ Assuming you already have the `roles.yaml` spec created using Permifrost:
 ```
 version: 2.1
 orbs:
-  permifrost-orb: hightouchio/permifrost-orb@0.1.0
+  permifrost-orb: hightouchio/permifrost-orb@0.1.1
 jobs:
   test-permissions:
     executor: permifrost-orb/default
