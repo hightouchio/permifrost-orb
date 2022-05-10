@@ -11,11 +11,9 @@ jobs:
     # Create a job to test the commands of your orbs.
     # You may want to add additional validation steps to ensure the commands are working as expected.
     command-tests:
-      docker:
-        - image: cimg/base:current
+      executor: permifrost-orb/default
       steps:
         - checkout
-        # Run your orb's commands to validate them.
         - permifrost-orb/apply:
             dry-run: true
             spec-path: src/tests/test_spec.yml
