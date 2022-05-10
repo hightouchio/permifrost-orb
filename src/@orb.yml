@@ -1,7 +1,9 @@
 version: 2.1
 
 description: >
-  Update Snowflake permissions with Permifrost
+  Update Snowflake permissions with Permifrost. This orb allows you to run
+  permifrost againt a spec file within your repo to keep your Snowflake permissions
+  up to date.
 
 display:
   home_url: "https://www.hightouch.io"
