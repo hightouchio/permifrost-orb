@@ -1,12 +1,11 @@
 description: >
-  This is a sample executor using Docker and Node. If you want to provide a custom environment in your orb, insert your image here.
-  If you do not require an executor, you can simply delete this directory.
+  The default executor is the CircleCI Python Image
 docker:
-  - image: 'cimg/node:<<parameters.tag>>'
+  - image: 'registry.gitlab.com/gitlab-data/permifrost:<<parameters.tag>>'
 parameters:
   tag:
-    default: lts
+    default: "latest"
     description: >
-      Pick a specific cimg/node image variant:
-      https://hub.docker.com/r/cimg/node/tags
+      Container tag to use for permifrost. See:
+      https://gitlab.com/gitlab-data/permifrost/container_registry/954896
     type: string

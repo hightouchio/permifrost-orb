@@ -1,13 +1,18 @@
 description: >
-  Sample example description.
-# Provide a use-case based example for using this orb.
-# Everything in the `usage` section will be displayed in the orb registry.
-# Comments are not retained.
+  apply-permissions-example
 usage:
   version: 2.1
   orbs:
-    <orb-name>: <namespace>/<orb-name>@1.2.3
+    permifrost-orb: hightouchio/permifrost-orb@0.2.0
+  jobs:
+    apply-permissions:
+      executor: permifrost-orb/default
+      steps:
+        - checkout
+        - permifrost-orb/apply:
+            spec-path: snowflake/permissions/roles.yml
   workflows:
-    use-my-orb:
+    apply-permissions-workflow:
       jobs:
-        - <orb-name>/<job-name>
+        - apply-permissions:
+            context: snowflake_creds
