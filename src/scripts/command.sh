@@ -1,11 +1,3 @@
-DRY_RUN="<< parameters.dry-run >>"
-DIFF="<< parameters.diff >>"
-ROLE="<< parameters.role >>"
-USER="<< parameters.user>>"
-IGNORE_MEMBERSHIPS="<< parameters.ignore-memberships>>"
-SPEC_PATH="<< parameters.spec-path >>"
-VERBOSE="<< parameters.verbose >>"
-
 if [ "${DRY_RUN}" == "true" ]; then
   set -- "$@" --dry
 fi

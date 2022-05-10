@@ -33,5 +33,15 @@ parameters:
 steps:
   - run:
       name: Run permifrost
-      command:  <<include(scripts/command.sh)>>
+      command:  |
+
+        DRY_RUN="<< parameters.dry-run >>"
+        DIFF="<< parameters.diff >>"
+        ROLE="<< parameters.role >>"
+        USER="<< parameters.user>>"
+        IGNORE_MEMBERSHIPS="<< parameters.ignore-memberships>>"
+        SPEC_PATH="<< parameters.spec-path >>"
+        VERBOSE="<< parameters.verbose >>"
+
+        <<include(scripts/command.sh)>>
 
